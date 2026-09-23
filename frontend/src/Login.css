@@ -1,0 +1,151 @@
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #f0f0f0;
+  min-height: 100vh;
+  /* Completely removed background and background-size from body */
+  /* Removed position: relative; overflow: visible; from body as well */
+}
+
+/* Removed body::before rule */
+/* body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  pointer-events: none;
+} */
+
+.auth-container {
+  background-color: rgba(2,76,123,100);
+  border-radius: 18px;
+  box-shadow: 0 0 25px rgba(0, 123, 255, 0.2);
+  padding: 70px; /* 增加内边距，使登录框更高 */
+  text-align: center;
+  position: relative;
+  z-index: 2; /* 确保内容在叠加层之上 */
+  border: 1px solid rgba(0, 123, 255, 0.3);
+  backdrop-filter: blur(5px);
+  max-width: 650px; /* 增加最大宽度，使其更宽 */
+  width: 90%; /* 在小屏幕上响应式 */
+  box-sizing: border-box; /* 确保 padding 和 border 不会增加宽度 */
+  margin: 0 auto; /* 在父容器中水平居中 */
+}
+
+#root {
+  /* 已由 index.css 统一管理，此处不需要特定样式 */
+  display: flex; /* 确保 #root 是 flex 容器 */
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+  min-height: 100vh; /* 确保 #root 占据整个视口高度 */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.login-logo {
+  width: 150px; /* 根据需要调整 Logo 大小 */
+  height: auto;
+  margin-bottom: 35px; /* 与原 h2 的 margin-bottom 保持一致 */
+}
+
+/* 移除了 .login-form h2 的样式，因为它已经被替换 */
+/* .login-form h2 {
+  margin-bottom: 35px;
+  color: #ffffff;
+  font-size: 2.8em;
+  font-weight: 700;
+  letter-spacing: 1px;
+} */
+
+.input-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 10px;
+  color: #b0b0b0;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.input-group input {
+  width: calc(100% - 28px); /* Adjust for padding and border */
+  padding: 15px 12px;
+  border: 1px solid #4a4a4a;
+  border-radius: 10px;
+  background-color: #2a2a2a; /* Dark input background */
+  color: #ffffff;
+  font-size: 1.05em;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #2e71b8; /* 应用用户修改 */
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+.login-button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #1264bc 0%, #00c6ff 100%); /* 应用用户修改 */
+  color: white;
+  font-size: 1.25em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 30px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4);
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #00c6ff 0%, #1264bc 100%); /* 悬停时渐变方向反转或颜色微调 */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
+}
+
+.login-button:disabled {
+  background: #555;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.error-message {
+  color: #ff8c42;
+  margin-bottom: 22px;
+  font-size: 0.98em;
+  background-color: rgba(255, 140, 66, 0.15);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 140, 66, 0.4);
+}
+
+.register-link-container {
+  margin-top: 25px;
+  color: #b0b0b0;
+  font-size: 0.95em;
+}
+
+.register-link-container a {
+  color: #00c6ff; /* Light blue for link */
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+
+.register-link-container a:hover {
+  color: #007bff;
+  text-decoration: underline;
+}

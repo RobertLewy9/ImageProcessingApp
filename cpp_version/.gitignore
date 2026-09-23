@@ -1,0 +1,47 @@
+# Build directories
+build/
+bin/
+lib/
+
+# Compiled objects
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+
+# IDE files
+*.user
+*.pro.user
+*.pro.user.*
+
+# Qt generated files
+moc_*
+qrc_*
+ui_*
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+# Visual Studio files
+*.vcxproj
+*.vcxproj.filters
+*.sln
+
+# Temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
+
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Sample images (generated)
+sample_images/test_image.png

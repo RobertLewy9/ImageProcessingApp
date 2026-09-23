@@ -1,0 +1,596 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  color: #f0f0f0;
+  position: relative; /* 必须保留，作为定位基准 */
+  
+  /* --- 注意：这里删除了原来的 background-image 属性 --- */
+}
+
+/* 新增：登录界面的背景 */
+.login-wrapper {
+  min-height: 100vh;
+  width: 100vw;
+  background: url('/BG/LoginBG.png') no-repeat center center fixed;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* 登录界面的背景叠加层 */
+.login-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4); /* 半透明的黑色叠加层 */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* --- 主功能页面的背景提亮图层 --- */
+.App::before { /* 不再需要 .logged-in */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* 放在最底层 */
+  
+  /* 确保引用正确的背景图 */
+  background-image: url('/BG/MainBG.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* 如果图片加载失败，显示明亮的渐变蓝，而不是灰色 */
+  background-color: #a1c4fd; 
+  
+  /* --- 关键点：提亮 15%，增加饱和度 10%，去除灰暗感 --- */
+  filter: brightness(1.15) saturate(1.1);
+}
+
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  
+  /* 修改：改为更深的半透明背景，增加对比度 */
+  background-color: rgba(2,76,123,100); /* 更深的半透明黑色 */
+  backdrop-filter: blur(10px); /* 磨砂模糊 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3); /* 亮色描边 */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 极淡的阴影 */
+  
+  position: relative;
+  z-index: 100;
+}
+
+.header-title-section {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem; /* 图标和标题之间的间距 */
+}
+
+.app-logo {
+  height: 2.5em; /* 图标高度与标题大小相协调 */
+  width: auto;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); /* 给图标添加一些光影效果 */
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5em; /* 调整标题大小 */
+  color: #f0f0f0; /* 标题颜色改为浅色，与深色背景形成对比 */
+}
+
+.logout-button {
+  background: linear-gradient(135deg, #e43d3d 0%, #ff6b6b 100%);
+  border: none;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  box-shadow: 0 0 15px rgba(255, 107, 107, 0.6);
+  transform: translateY(-2px);
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center; /* 横向整体居中 */
+  align-items: flex-start; 
+  width: 100%;
+  padding: 3.5rem 2rem 8rem 2rem;
+  gap: 2.5rem; /* 增加主要区域间的间距 */
+  box-sizing: border-box;
+  min-height: 350px;
+}
+
+.image-section {
+  display: flex;
+  flex-direction: row;
+  gap: 2.0rem; /* 调整图片上传和处理结果间的间距 */
+  align-items: flex-start;
+  flex-grow: 2; /* 给予更多空间，使其比历史记录区域更宽 */
+  justify-content: center;
+  width: auto;
+}
+
+.upload-section, .result-section {
+  width: 100%; /* 让它在其父容器中填充可用宽度 */
+  max-width: 650px; /* 设置最大宽度 */
+  height: 500px; /* 调整高度 */
+  flex-grow: 1; /* 让它们在 image-section 内部平均分配空间 */
+  flex-basis: 0; /* 确保 flex-grow 可以生效 */
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  
+  /* --- 修复开始 --- */
+  
+  /* 1. 提升层级：防止被全局背景、阴影或潜在的遮罩层覆盖变暗 */
+  position: relative; 
+  z-index: 10; 
+
+  /* 2. 重置文字颜色：背景是浅蓝，文字必须是深色，否则会显得"发灰/看不清" */
+  color: #333333; 
+  
+  /* 3. 背景增强：保持你的渐变，但为了保险起见，确保不透明度为 1 */
+  background: linear-gradient(135deg, #e0f6ff 0%, #c1eafe 100%) !important;
+  
+  /* --- 修复结束 --- */
+
+  /* 保持你原有的阴影和边框 */
+  box-shadow: 0 2px 23px 0 rgba(100,180,240,0.12), 0 0 60px 0 rgba(255,255,255,.16); 
+  border-radius: 18px;
+  border: 1.5px solid #b1e8fd;
+  margin: 0;
+  padding: 2.2rem 12px 1.2rem 12px;
+}
+
+.image-display-area {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* 调整为固定高度，确保统一尺寸 */
+  height: 400px; /* 例如，调整为400px，确保与上传区域高度匹配 */
+  max-height: 400px;
+  overflow: hidden; /* 隐藏超出部分 */
+  border: 1px dashed rgba(93, 142, 192, 0.5); /* 虚线框 */
+  border-radius: 10px;
+  margin-top: 1rem;
+}
+
+.upload-section h2, .result-section h2 {
+  color: #1363c6;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+  margin-top: 0.2rem;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.image-placeholder {
+  background: linear-gradient(135deg, rgba(200, 230, 255, 0.7), rgba(150, 200, 255, 0.9));
+  color: #eac5c5;
+  /* 确保与 image-display-area 相同的尺寸 */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2em;
+  /* 移除边框和圆角，因为现在由 .image-display-area 提供 */
+  border: none; 
+  border-radius: 0; 
+  margin-top: 0; 
+}
+
+.upload-section {
+  margin-right: 0;
+}
+
+.result-section {
+  margin-left: 0;
+}
+
+.history-section {
+  width: 100%; /* 填充可用宽度 */
+  max-width: 500px; /* 加宽上传历史框 */
+  height: 500px; /* 与图片处理区域保持一致的高度 */
+  flex-grow: 1; /* 允许其根据需要增长 */
+  background: linear-gradient(135deg, #e0f6ff 0%, #c1eafe 100%);
+  box-shadow: 0 2px 23px 0 rgba(100,180,240,0.12), 0 0 60px 0 rgba(255,255,255,.16);
+  border-radius: 18px;
+  border: 1.5px solid #b1e8fd;
+  padding: 2.2rem 12px 1.2rem 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333333;
+  overflow-y: auto; /* 允许滚动 */
+}
+
+.history-section h2 {
+  color: #1363c6;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+  margin-top: 0.2rem;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
+.history-item {
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.history-item p {
+  margin: 0.2rem 0;
+  font-size: 0.95em;
+}
+
+.history-actions a {
+  display: inline-block;
+  margin-right: 10px;
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.history-actions a:hover {
+  text-decoration: underline;
+}
+
+.delete-button {
+  background-color: #dc3545; /* 红色 */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85em;
+  transition: background-color 0.2s ease;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}
+
+.controls-section {
+  position: fixed;
+  left: 50%;
+  bottom: 36px;
+  transform: translateX(-50%);
+  width: auto; /* 宽度自适应内容 */
+  max-width: 900px;
+  z-index: 222;
+  background: linear-gradient(135deg, #e0f6ff 0%, #c1eafe 100%); /* 渐变青色 */
+  box-shadow: 0 2px 23px 0 rgba(186, 190, 193, 0.12), 0 0 60px 0 rgba(255, 255, 255, 0.16);
+  border-radius: 18px;
+  padding: 1.2rem 1.5rem; /* 调整内边距 */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row; /* 默认水平排列 */
+  align-items: center; 
+  gap: 1.5rem; /* 调整主要内容之间的间距 */
+  border: 1.5px solid #b1e8fd;
+  transition: all 0.3s ease; /* 添加过渡效果 */
+}
+
+.function-menu-header {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* 防止标题换行 */
+  color: #1363c6;
+}
+
+.function-menu-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  margin-right: 0.5rem; /* 箭头与标题的间距 */
+}
+
+.processing-options-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* 从左到右展开 */
+  gap: 1.2rem 1.5rem; /* 调整按钮之间的间距 */
+  width: 100%;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out, opacity 0.3s ease-out; /* 添加过渡效果 */
+  opacity: 0;
+}
+
+.controls-section .processing-options-horizontal {
+  max-height: 200px; /* 展开时的高度 */
+  opacity: 1;
+}
+
+.processing-options-horizontal button, .recognize-button {
+  background-color: #dc3545 !important; /* 红色，与删除按钮一致 */
+  border: none;
+  color: rgb(255, 255, 255);
+  padding: 0.8rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  flex-grow: 0; /* 不强制增长 */
+  min-width: 120px;
+}
+
+.processing-options-horizontal button:hover, .recognize-button:hover {
+  box-shadow: 0 0 15px rgba(220, 53, 69, 0.6); /* 调整阴影颜色以匹配新的红色 */
+  background-color: #c82333 !important; /* 悬停颜色，更深的红色 */
+  transform: translateY(-2px);
+}
+
+.processing-options-horizontal button:disabled, .recognize-button:disabled {
+  background-color: #e08e92 !important; /* 调整禁用状态的颜色，使其与红色基调协调 */
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.recognition-output {
+  background: linear-gradient(135deg, rgba(200, 230, 255, 0.7), rgba(150, 200, 255, 0.7));
+  border: 1px solid rgba(100, 150, 200, 0.3);
+  border-radius: 10px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #333;
+  text-align: center; /* 居中显示文本 */
+  width: 100%;
+  box-sizing: border-box;
+  /* Removed flex-shrink: 0; */
+}
+
+.download-result-button {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%); /* 青色 */
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.download-result-button:hover {
+  background: linear-gradient(135deg, #138496 0%, #17a2b8 100%);
+  transform: translateY(-1px);
+}
+
+.recognition-output h3 {
+  color: #007bff;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.recognition-output p {
+  margin: 0.3rem 0;
+}
+
+.loading-message, .error-message {
+  color: #007bff;
+  font-size: 1.1em;
+  margin-top: 1rem;
+}
+
+.error-message {
+  color: #ff6b6b;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.change-password-button, .about-button { /* 将 .about-button 的样式与 .change-password-button 合并 */
+  background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.change-password-button:hover, .about-button:hover {
+  box-shadow: 0 0 15px rgba(0, 198, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.change-password-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7); /* 遮罩层 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.change-password-form {
+  background: linear-gradient(135deg, #e0f6ff 0%, #c1eafe 100%);
+  color: #333;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  max-width: 450px;
+  width: 90%;
+}
+
+.change-password-form h2 {
+  color: #1363c6;
+  margin-bottom: 1.5rem;
+}
+
+.change-password-form .input-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.change-password-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #004085;
+  font-weight: bold;
+}
+
+.change-password-form input {
+  width: calc(100% - 24px);
+  padding: 0.8rem;
+  border: 1px solid #a1c4fd;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: #333;
+  font-size: 1em;
+}
+
+.change-password-form input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+.change-password-form .form-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.change-password-form button {
+  padding: 0.7rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.change-password-form button[type="submit"] {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%); /* 绿色 */
+  color: white;
+}
+
+.change-password-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #218838 0%, #28a745 100%);
+  transform: translateY(-1px);
+}
+
+.change-password-form button[type="button"] {
+  background-color: #6c757d; /* 灰色 */
+  color: white;
+}
+
+.change-password-form button[type="button"]:hover {
+  background-color: #5a6268;
+  transform: translateY(-1px);
+}
+
+.change-password-form button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.file-upload-button {
+  background-color: #dc3545 !important; /* 纯红色 */
+  border: none;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem; /* Moved button up */
+  display: inline-block;
+}
+
+.file-upload-button:hover {
+  box-shadow: 0 0 15px rgba(220, 53, 69, 0.6); /* 调整阴影颜色以匹配新的红色 */
+  background-color: #c82333 !important; /* 悬停颜色，更深的红色 */
+  transform: translateY(-2px);
+}
+
+input[type="file"] {
+  display: none !important; /* 确保文件输入框完全隐藏 */
+}
+
+.uploaded-image, .processed-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-top: 0; /* Removed margin-top as it's handled by parent flex */
+  border: 1px solid rgba(150, 200, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(150, 200, 255, 0.3);
+}
+
+.clear-history-button {
+  background: linear-gradient(135deg, #e43d3d 0%, #ff6b6b 100%);
+  border: none;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+.clear-history-button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+.clear-history-button:hover:not(:disabled) {
+  box-shadow: 0 0 15px #ff6b6b;
+  transform: translateY(-2px);
+}

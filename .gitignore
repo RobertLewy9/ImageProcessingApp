@@ -1,0 +1,77 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+*.py[cod]
+*.pyo
+
+venv/
+.venv/
+env/
+
+# Python environment / secrets
+.env
+.env.*
+
+# YOLO / model weights
+*.pt
+*.pth
+*.onnx
+
+# =========================
+# Node / Frontend
+# =========================
+node_modules/
+dist/
+build/
+frontend/node_modules/
+frontend/回溯src代码用/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# C/C++ build files
+# =========================
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.obj
+*.o
+*.exe
+*.dll
+*.lib
+*.pdb
+
+# =========================
+# OpenCV third-party source
+# =========================
+cpp_version/opencv/
+cpp_version/opencv_contrib/
+
+# OpenCV build output
+cpp_version/opencv_build/
+
+# =========================
+# Logs / temporary files
+# =========================
+*.log
+*.tmp
+*.temp
+
+# =========================
+# Backend runtime data
+# =========================
+backend/history/
+backend/uploads/
+
+# KXZ model weights
+backend/KXZ_Model/model/**/pytorch_model.bin
+backend/KXZ_Model/model/best_model.pth
+
+# Qt Creator local settings
+cpp_version/.qtcreator/
